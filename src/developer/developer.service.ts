@@ -1,8 +1,11 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
+import { JwtPayload } from 'src/interfaces/jwt-payload.interface';
 import { Developer, DeveloperDocument } from './developer.model';
+import { AuthCredentialsDto } from './dto/auth-credentials-dto';
 import { CreateDeveloperDto } from './dto/create-developer-dto';
 
 @Injectable()
@@ -11,6 +14,7 @@ export class DeveloperService {
   constructor(
     @InjectModel(Developer.name)
     private readonly developerModel: Model<DeveloperDocument>,
+    private jwtService: JwtService,
   ) {}
 
   //   create user
@@ -37,7 +41,7 @@ export class DeveloperService {
       // save in db
       const res = await newUser.save();
 
-      //   return response
+      // return response
       response
         .status(HttpStatus.CREATED)
         .json({ message: 'Successfully Created ', developer: res });
@@ -49,5 +53,60 @@ export class DeveloperService {
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .json({ message: 'Server Error' });
     }
+  }
+
+  //   sign in user
+  // signin
+  async signInDeveloper(
+    authCredentialsDto: AuthCredentialsDto,
+    response,
+  ): Promise<void> {
+    try {
+      // grab email and password
+      const { email, password } = authCredentialsDto;
+      console.log(process.env.JWT_SECRET);
+      // find the user in db
+      const existingDeveloper = await this.developerModel.findOne({
+        email: email,
+      });
+
+      // if user exists verify the password by comparing
+      if (
+        existingDeveloper &&
+        (await bcrypt.compare(password, existingDeveloper.password))
+      ) {
+        // sign jwt token
+        //   define payload
+        const payload: JwtPayload = {
+          email,
+          username: existingDeveloper.userName,
+        };
+
+        //   get the token
+        const accesstoken = await this.jwtService.sign(payload);
+
+        // return { accesstoken };
+
+        // return response
+        response
+          .status(HttpStatus.OK)
+          .json({ message: 'Login Successfull', accesstoken });
+      } else {
+        throw new UnauthorizedException('Please check login credentials');
+      }
+    } catch (err) {
+      console.log(err);
+
+      //   return response
+      response
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: 'Server Error' });
+    }
+  }
+
+  // find a user by email
+  async findOneByEmail(email: string): Promise<Developer> {
+    const developer = await this.developerModel.findOne({ email: email });
+    return developer;
   }
 }
