@@ -3,6 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { DeveloperService } from './developer.service';
 import { AuthCredentialsDto } from './dto/auth-credentials-dto';
 import { CreateDeveloperDto } from './dto/create-developer-dto';
+import { RefreshAccessTokenDto } from './dto/refresh-access-token-dto';
 
 @Controller('developer')
 export class DeveloperController {
@@ -27,6 +28,19 @@ export class DeveloperController {
     @Res() response,
   ): Promise<void> {
     return this.developerService.signInDeveloper(authCredentialsDto, response);
+  }
+
+  // refresh token
+
+  @Post('/refresh-access-token')
+  async refreshAccessToken(
+    @Body() refreshAccessTokenDto: RefreshAccessTokenDto,
+    @Res() response,
+  ) {
+    return this.developerService.refreshAccessToken(
+      refreshAccessTokenDto,
+      response,
+    );
   }
 
   //   test

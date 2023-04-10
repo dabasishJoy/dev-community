@@ -6,6 +6,7 @@ import { DeveloperController } from './developer.controller';
 import { Developer, DeveloperSchema } from './developer.model';
 import { DeveloperService } from './developer.service';
 import { JwtStrategy } from './jwt.strategy';
+import { RefreshTokenSchema } from './refresh-token.model';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { JwtStrategy } from './jwt.strategy';
     }),
     MongooseModule.forFeature([
       { name: Developer.name, schema: DeveloperSchema },
+      { name: 'RefreshToken', schema: RefreshTokenSchema },
     ]),
   ],
   controllers: [DeveloperController],
