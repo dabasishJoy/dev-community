@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
-import { JwtPayload } from 'src/interfaces/jwt-payload.interface';
+import { JwtPayload } from 'src/developer/interfaces/jwt-payload.interface';
 import { Developer, DeveloperDocument } from './developer.model';
 import { AuthCredentialsDto } from './dto/auth-credentials-dto';
 import { CreateDeveloperDto } from './dto/create-developer-dto';
@@ -64,7 +64,6 @@ export class DeveloperService {
     try {
       // grab email and password
       const { email, password } = authCredentialsDto;
-      console.log(process.env.JWT_SECRET);
       // find the user in db
       const existingDeveloper = await this.developerModel.findOne({
         email: email,
