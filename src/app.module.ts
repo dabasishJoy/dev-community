@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { DeveloperModule } from './developer/developer.module';
 import { PostsModule } from './posts/posts.module';
 import { CommentsModule } from './comments/comments.module';
+import { SkillsModule } from './skills/skills.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CommentsModule } from './comments/comments.module';
     DeveloperModule,
     PostsModule,
     CommentsModule,
+    SkillsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
