@@ -7,6 +7,7 @@ import { DeveloperModule } from './developer/developer.module';
 import { PostsModule } from './posts/posts.module';
 import { CommentsModule } from './comments/comments.module';
 import { SkillsModule } from './skills/skills.module';
+import { ExperienceModule } from './experience/experience.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { SkillsModule } from './skills/skills.module';
     PostsModule,
     CommentsModule,
     SkillsModule,
+    ExperienceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
