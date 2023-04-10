@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DeveloperModule } from './developer/developer.module';
 import { PostsModule } from './posts/posts.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { PostsModule } from './posts/posts.module';
     MongooseModule.forRoot(process.env.DB_CONNECTION_STRING),
     DeveloperModule,
     PostsModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

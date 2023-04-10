@@ -7,6 +7,7 @@ import { PostsService } from './posts.service';
 export class PostsController {
   constructor(private postsService: PostsService) {}
 
+  //   create a post
   @Post('/post')
   @UseGuards(AuthGuard('jwt'))
   async createPost(@Body() createPostDto: CreatePostDto, @Res() response) {
