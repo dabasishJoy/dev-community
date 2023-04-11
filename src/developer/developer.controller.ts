@@ -1,5 +1,7 @@
 import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/get-user-decorator';
+import { Developer } from './developer.model';
 import { DeveloperService } from './developer.service';
 import { AuthCredentialsDto } from './dto/auth-credentials-dto';
 import { CreateDeveloperDto } from './dto/create-developer-dto';
@@ -46,7 +48,7 @@ export class DeveloperController {
   //   test
   @Get('/test')
   @UseGuards(AuthGuard('jwt'))
-  async test() {
-    return 'Success';
+  async test(@GetUser() developer: Developer) {
+    return developer;
   }
 }
