@@ -23,6 +23,9 @@ export class Developer {
 
   @Prop({ required: true })
   password: string;
+
+  @Prop()
+  userId: string;
 }
 
 export const DeveloperSchema = SchemaFactory.createForClass(Developer);

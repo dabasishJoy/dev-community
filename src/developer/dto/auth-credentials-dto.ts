@@ -1,18 +1,40 @@
-import { IsString, MaxLength, MinLength } from 'class-validator';
-export enum granType {
-  EMAIL = 'email',
-  REFRESH = 'refresh',
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  MaxLength,
+  MinLength,
+  ValidateIf,
+} from 'class-validator';
+
+export enum GranType {
+  email = 'email',
+  refresh = 'refresh',
 }
 export class AuthCredentialsDto {
-  granType: granType;
+  @IsNotEmpty({ message: 'Gran type name is empty' })
+  @IsEnum(GranType, { message: 'Invalid grantype type' })
   @IsString()
-  email: string;
+  readonly granType: GranType;
+
+  @IsNotEmpty({ message: 'Email is empty' })
+  @IsString()
+  @IsEmail()
+  @ValidateIf((obj) => obj.granType === GranType.email)
+  readonly email?: string;
+
+  @ValidateIf((obj) => obj.granType === GranType.email)
   @IsString()
   @MinLength(6, { message: 'Password is too short' })
-  @MaxLength(20)
+  @MaxLength(20, { message: 'Password is too long' })
   // @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
   //   message: 'Password is too weak',
   // })
-  password: string;
-  refreshToken?: string;
+  readonly password: string;
+
+  @IsNotEmpty({ message: 'Refresh token is empty' })
+  @IsString()
+  @ValidateIf((obj) => obj.granType === GranType.refresh)
+  readonly refreshToken?: string;
 }

@@ -5,7 +5,6 @@ import {
   Param,
   Post,
   Put,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -21,14 +20,8 @@ export class ExperienceController {
   // create experiences
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  async createExperience(
-    @Body() createExperienceDto: CreateExperienceDto,
-    @Res() response,
-  ) {
-    return this.experienceService.createExperience(
-      createExperienceDto,
-      response,
-    );
+  async createExperience(@Body() createExperienceDto: CreateExperienceDto) {
+    return await this.experienceService.createExperience(createExperienceDto);
   }
 
   // update experiences
@@ -38,7 +31,7 @@ export class ExperienceController {
     @Param() experienceParams: ExperienceParams,
     @Body() updateExperienceDto: UpdateExperienceDto,
   ) {
-    return this.experienceService.updateExperience(
+    return await this.experienceService.updateExperience(
       experienceParams,
       updateExperienceDto,
     );
@@ -47,6 +40,6 @@ export class ExperienceController {
   @Get()
   @UseGuards(AuthGuard('jwt'))
   async getExperiences() {
-    return this.experienceService.getExperiences();
+    return await this.experienceService.getExperiences();
   }
 }

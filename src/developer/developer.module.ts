@@ -2,11 +2,10 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from '../strategies/jwt.strategy';
 import { DeveloperController } from './developer.controller';
-import { Developer, DeveloperSchema } from './developer.model';
 import { DeveloperService } from './developer.service';
-import { JwtStrategy } from './jwt.strategy';
-import { RefreshTokenSchema } from './refresh-token.model';
+import { Developer, DeveloperSchema } from './schemas/developer.schema';
 
 @Module({
   imports: [
@@ -17,7 +16,6 @@ import { RefreshTokenSchema } from './refresh-token.model';
     }),
     MongooseModule.forFeature([
       { name: Developer.name, schema: DeveloperSchema },
-      { name: 'RefreshToken', schema: RefreshTokenSchema },
     ]),
   ],
   controllers: [DeveloperController],

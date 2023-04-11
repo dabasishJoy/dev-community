@@ -1,11 +1,16 @@
-import { IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class UpdateExperienceDto {
+  @IsNotEmpty({ message: 'Description is empty' })
   @IsString()
-  description: string;
+  readonly description: string;
+
+  @IsNotEmpty({ message: 'Years is empty' })
   @IsString()
-  years: number;
+  readonly years: number;
+
+  @IsNotEmpty({ message: 'Author id is empty' })
   @IsString()
   field: string;
-  author: string;
+  readonly author: string;
 }

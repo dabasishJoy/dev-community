@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
-import { Developer } from 'src/developer/developer.model';
+import { Developer } from 'src/developer/schemas/developer.schema';
 
 export type SkillsDocument = Skills & Document;
 
@@ -10,7 +10,7 @@ export class Skills {
   skillname: [string];
 
   @Prop({ required: true, type: Types.ObjectId, ref: Developer.name })
-  author: Developer;
+  author: Types.ObjectId;
 }
 
 export const SkillsSchema = SchemaFactory.createForClass(Skills);

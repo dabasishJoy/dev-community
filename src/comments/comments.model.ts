@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
-import { Developer } from 'src/developer/developer.model';
+import { Developer } from 'src/developer/schemas/developer.schema';
+
 import { Posts } from 'src/posts/posts.model';
 
 export type CommentsDocument = Posts & Document;
@@ -11,7 +12,7 @@ export class Comments {
   description: string;
 
   @Prop({ required: true, type: Types.ObjectId, ref: Developer.name })
-  author: Developer;
+  author: Types.ObjectId;
 
   @Prop({ required: true, type: Types.ObjectId, ref: Posts.name })
   post: Posts;
