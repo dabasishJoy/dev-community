@@ -1,6 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { SkillsParams } from 'src/skills/interfaces/skills-params.interface';
 import { CreatePostDto } from './dto/create-post-dto';
 import { Posts, PostsDocument } from './posts.model';
 
@@ -22,5 +23,14 @@ export class PostsService {
     response
       .status(HttpStatus.CREATED)
       .json({ message: 'Successfully Created Post', post: res });
+  }
+
+  // get posts
+  async getPosts(postParams: SkillsParams) {
+    const { authorId } = postParams;
+
+    const posts = await this.postModel.find({ author: authorId });
+
+    return posts;
   }
 }
