@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateSkillsDto } from './dto/create-skills-dto';
 import { UpdateSkillsDto } from './dto/update-skills-dto';
+import { SkillsParams } from './interfaces/skills-params.interface';
 import { Skills, SkillsDocument } from './skills.model';
 
 @Injectable()
@@ -36,5 +37,20 @@ export class SkillsService {
     response
       .status(HttpStatus.CREATED)
       .json({ message: 'Successfully Updated Skill', post: existingSkill });
+  }
+
+  // get all skills
+  async getSkills() {
+    const skills = await this.skillsModel.find();
+
+    return skills;
+  }
+
+  // get skills of an author
+  async getSkillsOfIndividual(skillsParams: SkillsParams) {
+    const { authorId } = skillsParams;
+    const skills = await this.skillsModel.find({ author: authorId });
+
+    return skills;
   }
 }
