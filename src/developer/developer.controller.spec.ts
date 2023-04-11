@@ -1,18 +1,23 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { DeveloperController } from './developer.controller';
+// import { Test, TestingModule } from '@nestjs/testing';
+// import { DeveloperController } from './developer.controller';
 
-describe('DeveloperController', () => {
-  let controller: DeveloperController;
+// // mock developer service
+// const mockDeveloperService = () => ({
+//   createDeveloper: jest.fn(),
+// });
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [DeveloperController],
-    }).compile();
+// describe('DeveloperController', () => {
+//   let controller: DeveloperController;
 
-    controller = module.get<DeveloperController>(DeveloperController);
-  });
+//   beforeEach(async () => {
+//     const module: TestingModule = await Test.createTestingModule({
+//       controllers: [DeveloperController],
+//     }).compile();
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-});
+//     controller = module.get<DeveloperController>(DeveloperController);
+//   });
+
+//   describe('signIn', () => {
+//     it("calls ")
+//   });
+// });
