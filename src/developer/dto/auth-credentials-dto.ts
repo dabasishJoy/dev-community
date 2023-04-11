@@ -1,6 +1,7 @@
 import { IsString, MaxLength, MinLength } from 'class-validator';
 
 export class AuthCredentialsDto {
+  granType: string;
   @IsString()
   email: string;
   @IsString()
@@ -10,4 +11,5 @@ export class AuthCredentialsDto {
   //   message: 'Password is too weak',
   // })
   password: string;
+  refreshToken?: string;
 }

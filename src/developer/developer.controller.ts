@@ -1,5 +1,7 @@
 import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/get-user-decorator';
+import { Developer } from './developer.model';
 import { DeveloperService } from './developer.service';
 import { AuthCredentialsDto } from './dto/auth-credentials-dto';
 import { CreateDeveloperDto } from './dto/create-developer-dto';
@@ -22,17 +24,44 @@ export class DeveloperController {
 
   //   sign in user
   @Post('/signin')
+  // @UseGuards(AuthGuard('jwt'))
   async signinDeveoper(
     @Body() authCredentialsDto: AuthCredentialsDto,
     @Res() response,
-  ): Promise<void> {
-    return this.developerService.signInDeveloper(authCredentialsDto, response);
+  ) {
+    if (authCredentialsDto.granType === 'email') {
+      return this.developerService.signInDeveloper(
+        authCredentialsDto,
+        response,
+      );
+    } else {
+      console.log(authCredentialsDto);
+      return this.developerService.refreshAccessToken(
+        authCredentialsDto,
+        response,
+      );
+    }
   }
+
+  // @Get('/get-test')
+  // async getTest(@GetUser() user: Developer, au) {}
+  // refresh token
+
+  // @Post('/refresh-access-token')
+  // async refreshAccessToken(
+  //   @Body() refreshAccessTokenDto: RefreshAccessTokenDto,
+  //   @Res() response,
+  // ) {
+  //   return this.developerService.refreshAccessToken(
+  //     refreshAccessTokenDto,
+  //     response,
+  //   );
+  // }
 
   //   test
   @Get('/test')
   @UseGuards(AuthGuard('jwt'))
-  async test() {
-    return 'Success';
+  async test(@GetUser() developer: Developer) {
+    return developer;
   }
 }
