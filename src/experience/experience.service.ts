@@ -1,8 +1,15 @@
-import { HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateExperienceDto } from './dto/create-experience-dto';
+import { UpdateExperienceDto } from './dto/update-experience-dto';
 import { Experience, ExperienceDocument } from './experience.model';
+import { ExperienceParams } from './interfaces/experience-params.interface';
 
 @Injectable()
 export class ExperienceService {
@@ -23,5 +30,30 @@ export class ExperienceService {
     response
       .status(HttpStatus.CREATED)
       .json({ message: 'Successfully Created Experience', Experience: res });
+  }
+
+  async getExperiences() {
+    const experiences = await this.experienceModel.find();
+
+    return experiences;
+  }
+
+  async updateExperience(
+    experienceParams: ExperienceParams,
+    updateExperienceDto: UpdateExperienceDto,
+  ) {
+    try {
+      this.logger.verbose(experienceParams);
+
+      const res = await this.experienceModel.findByIdAndUpdate(
+        experienceParams.experienceId,
+        updateExperienceDto,
+      );
+
+      return res;
+    } catch (err) {
+      console.log(err);
+      throw new InternalServerErrorException('Internal Server Errror');
+    }
   }
 }
