@@ -10,7 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
 import { JwtPayload } from 'src/developer/interfaces/jwt-payload.interface';
 import { Developer, DeveloperDocument } from './developer.model';
-import { AuthCredentialsDto } from './dto/auth-credentials-dto';
+import { AuthCredentialsDto, granType } from './dto/auth-credentials-dto';
 import { CreateDeveloperDto } from './dto/create-developer-dto';
 import { RefreshToken, RefreshTokenDocument } from './refresh-token.model';
 
@@ -72,6 +72,9 @@ export class DeveloperService {
     response,
   ): Promise<void> {
     try {
+      if (authCredentialsDto.granType === granType.REFRESH) {
+        return this.refreshAccessToken(authCredentialsDto, response);
+      }
       // grab email and password
       const { email, password } = authCredentialsDto;
       // find the user in db

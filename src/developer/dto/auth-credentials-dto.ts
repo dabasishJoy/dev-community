@@ -1,7 +1,10 @@
 import { IsString, MaxLength, MinLength } from 'class-validator';
-
+export enum granType {
+  EMAIL = 'email',
+  REFRESH = 'refresh',
+}
 export class AuthCredentialsDto {
-  granType: string;
+  granType: granType;
   @IsString()
   email: string;
   @IsString()

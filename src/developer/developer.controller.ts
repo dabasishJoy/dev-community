@@ -29,17 +29,7 @@ export class DeveloperController {
     @Body() authCredentialsDto: AuthCredentialsDto,
     @Res() response,
   ) {
-    if (authCredentialsDto.granType === 'email') {
-      return this.developerService.signInDeveloper(
-        authCredentialsDto,
-        response,
-      );
-    } else {
-      console.log(authCredentialsDto);
-      return this.developerService.refreshAccessToken(
-        authCredentialsDto,
-        response,
-      );
+      return this.developerService.signInDeveloper( authCredentialsDto,response);
     }
   }
 
