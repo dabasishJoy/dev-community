@@ -29,29 +29,29 @@ export class DeveloperController {
     @Body() authCredentialsDto: AuthCredentialsDto,
     @Res() response,
   ) {
-      return this.developerService.signInDeveloper( authCredentialsDto,response);
-    }
+    return this.developerService.signInDeveloper(authCredentialsDto, response);
   }
 
-  // @Get('/get-test')
-  // async getTest(@GetUser() user: Developer, au) {}
-  // refresh token
-
-  // @Post('/refresh-access-token')
-  // async refreshAccessToken(
-  //   @Body() refreshAccessTokenDto: RefreshAccessTokenDto,
-  //   @Res() response,
-  // ) {
-  //   return this.developerService.refreshAccessToken(
-  //     refreshAccessTokenDto,
-  //     response,
-  //   );
-  // }
-
-  //   test
   @Get('/test')
   @UseGuards(AuthGuard('jwt'))
   async test(@GetUser() developer: Developer) {
     return developer;
   }
 }
+
+// @Get('/get-test')
+// async getTest(@GetUser() user: Developer, au) {}
+// refresh token
+
+// @Post('/refresh-access-token')
+// async refreshAccessToken(
+//   @Body() refreshAccessTokenDto: RefreshAccessTokenDto,
+//   @Res() response,
+// ) {
+//   return this.developerService.refreshAccessToken(
+//     refreshAccessTokenDto,
+//     response,
+//   );
+// }
+
+//   test
