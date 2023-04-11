@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from 'src/auth/get-user-decorator';
+import { GetUser } from '../auth/get-user-decorator';
 import { Developer } from './developer.model';
 import { DeveloperService } from './developer.service';
 import { AuthCredentialsDto } from './dto/auth-credentials-dto';
@@ -17,9 +17,9 @@ export class DeveloperController {
   @Post('/signup')
   async signupDeveoper(
     @Body() createDeveloperDto: CreateDeveloperDto,
-    @Res() response,
-  ): Promise<void> {
-    return this.developerService.createDeveloper(createDeveloperDto, response);
+    // @Res() response,
+  ): Promise<any> {
+    return await this.developerService.createDeveloper(createDeveloperDto);
   }
 
   //   sign in user
