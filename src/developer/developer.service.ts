@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   HttpStatus,
   Injectable,
   Logger,
@@ -13,7 +12,6 @@ import { JwtPayload } from 'src/developer/interfaces/jwt-payload.interface';
 import { Developer, DeveloperDocument } from './developer.model';
 import { AuthCredentialsDto } from './dto/auth-credentials-dto';
 import { CreateDeveloperDto } from './dto/create-developer-dto';
-import { RefreshAccessTokenDto } from './dto/refresh-access-token-dto';
 import { RefreshToken, RefreshTokenDocument } from './refresh-token.model';
 
 @Injectable()
@@ -87,25 +85,28 @@ export class DeveloperService {
         (await bcrypt.compare(password, existingDeveloper.password))
       ) {
         // sign jwt token
+
         //   define payload
         const payload: JwtPayload = {
+          userName: existingDeveloper.userName,
           email,
-          username: existingDeveloper.userName,
+          userId: existingDeveloper._id,
         };
 
+        console.log(payload);
         //   get the token
         const accesstoken = await this.jwtService.sign(payload);
         const refreshToken = await this.jwtService.sign(payload, {
           expiresIn: '30d',
         });
 
-        // save in db
-        const refreshTokenInDb = new this.refreshTokenModel({
-          email,
-          refreshToken,
-        });
+        // // save in db
+        // const refreshTokenInDb = new this.refreshTokenModel({
+        //   email,
+        //   refreshToken,
+        // });
 
-        await refreshTokenInDb.save();
+        // await refreshTokenInDb.save();
         // return { accesstoken };
 
         // return response
@@ -124,36 +125,59 @@ export class DeveloperService {
         .json({ message: 'Server Error' });
     }
   }
-  // refresh access token
-  async refreshAccessToken(
-    refreshAccessTokenDto: RefreshAccessTokenDto,
-    response,
-  ) {
-    const { email } = await this.refreshTokenModel.findOne({
-      refreshToken: refreshAccessTokenDto.refreshToken,
+
+  async refreshAccessToken(authCredentialsDto: AuthCredentialsDto, response) {
+    //check if user valid from refresh token
+
+    const data = await this.jwtService.verify(authCredentialsDto.refreshToken, {
+      secret: process.env.JWT_SECRET,
     });
 
-    // console.log(refreshToken, email);
+    const user = await this.developerModel.findOne({ email: data.email });
 
-    const user = await this.developerModel.findOne({ email: email });
     if (!user) {
-      throw new BadRequestException('Bad request');
+      throw new UnauthorizedException('unauthorized access');
     }
-
-    // //   define payload
     const payload: JwtPayload = {
-      email,
-      username: user.userName,
+      userName: user.userName,
+      email: user.email,
+      userId: user._id,
     };
 
-    // //   get the token
     const accesstoken = await this.jwtService.sign(payload);
-    response.status(HttpStatus.CREATED).json({ accesstoken: accesstoken });
+
+    response.json({ accesstoken });
   }
+  // refresh access token
+  // async refreshAccessToken(
+  //   refreshAccessTokenDto: RefreshAccessTokenDto,
+  //   response,
+  // ) {
+  //   const { email } = await this.refreshTokenModel.findOne({
+  //     refreshToken: refreshAccessTokenDto.refreshToken,
+  //   });
+
+  //   // console.log(refreshToken, email);
+
+  //   const user = await this.developerModel.findOne({ email: email });
+  //   if (!user) {
+  //     throw new BadRequestException('Bad request');
+  //   }
+
+  //   // //   define payload
+  //   const payload: JwtPayload = {
+  //     email,
+  //     username: user.userName,
+  //   };
+
+  //   // //   get the token
+  //   const accesstoken = await this.jwtService.sign(payload);
+  //   response.status(HttpStatus.CREATED).json({ accesstoken: accesstoken });
+  // }
 
   // find a user by email
-  async findOneByEmail(email: string): Promise<Developer> {
-    const developer = await this.developerModel.findOne({ email: email });
+  async findOneById(userId: string): Promise<Developer> {
+    const developer = await this.developerModel.findById(userId);
     return developer;
   }
 }
