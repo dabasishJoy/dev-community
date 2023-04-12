@@ -2,6 +2,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -22,7 +23,8 @@ export class AuthCredentialsDto {
   @IsString()
   @IsEmail()
   @ValidateIf((obj) => obj.granType === GranType.email)
-  readonly email?: string;
+  @IsOptional()
+  readonly email: string;
 
   @ValidateIf((obj) => obj.granType === GranType.email)
   @IsString()
@@ -36,5 +38,6 @@ export class AuthCredentialsDto {
   @IsNotEmpty({ message: 'Refresh token is empty' })
   @IsString()
   @ValidateIf((obj) => obj.granType === GranType.refresh)
-  readonly refreshToken?: string;
+  @IsOptional()
+  readonly refreshToken: string;
 }

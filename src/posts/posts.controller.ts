@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { SkillsParams } from 'src/skills/interfaces/skills-params.interface';
 import { CreatePostDto } from './dto/create-post-dto';
@@ -19,8 +11,8 @@ export class PostsController {
   //   create a post
   @Post('/post')
   @UseGuards(AuthGuard('jwt'))
-  async createPost(@Body() createPostDto: CreatePostDto, @Res() response) {
-    return this.postsService.createPost(createPostDto, response);
+  async createPost(@Body() createPostDto: CreatePostDto) {
+    return this.postsService.createPost(createPostDto);
   }
 
   //   get all posts
