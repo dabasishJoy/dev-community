@@ -12,5 +12,4 @@ export class CreateExperienceDto {
   @IsNotEmpty({ message: 'Field is empty' })
   @IsString()
   field: string;
-  readonly author: string;
 }

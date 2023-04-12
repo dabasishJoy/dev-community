@@ -8,9 +8,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/decorators/get-user-decorator';
+import { IDeveloper } from 'src/developer/interfaces/developer.interface';
 import { CreateSkillsDto } from './dto/create-skills-dto';
 import { UpdateSkillsDto } from './dto/update-skills-dto';
-import { SkillsParams } from './interfaces/skills-params.interface';
+
+import { ISkillsParams } from './interfaces/skills-params.interface';
+import { IUpdateSkillsParams } from './interfaces/update-skills-params.interface';
 import { SkillsService } from './skills.service';
 
 @Controller('skills')
@@ -20,15 +24,24 @@ export class SkillsController {
   // create skill
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  async createSkill(@Body() createSkillsDto: CreateSkillsDto) {
-    return await this.skillsService.createSkills(createSkillsDto);
+  async createSkill(
+    @GetUser() developer: IDeveloper,
+    @Body() createSkillsDto: CreateSkillsDto,
+  ) {
+    return await this.skillsService.createSkills(createSkillsDto, developer);
   }
 
   // update skill
-  @Put()
+  @Put('/:skillId')
   @UseGuards(AuthGuard('jwt'))
-  async updateSkill(@Body() updateSkillsDto: UpdateSkillsDto) {
-    return await this.skillsService.updateSkills(updateSkillsDto);
+  async updateSkill(
+    @Param() updateSkillsParams: IUpdateSkillsParams,
+    @Body() updateSkillsDto: UpdateSkillsDto,
+  ) {
+    return await this.skillsService.updateSkills(
+      updateSkillsDto,
+      updateSkillsParams,
+    );
   }
 
   // get skills of an author
@@ -41,7 +54,7 @@ export class SkillsController {
   // get skills of an author
   @Get('/:authorId')
   @UseGuards(AuthGuard('jwt'))
-  async getSkillsOfIndividual(@Param() skillsParams: SkillsParams) {
+  async getSkillsOfIndividual(@Param() skillsParams: ISkillsParams) {
     return await this.skillsService.getSkillsOfIndividual(skillsParams);
   }
 }

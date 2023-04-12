@@ -12,9 +12,6 @@ export class Developer {
   @Prop({ required: true })
   lname: string;
 
-  @Prop({ required: true })
-  userName: string;
-
   @Prop({ required: true, unique: true, trim: true, lowercase: true })
   email: string;
 
@@ -23,9 +20,6 @@ export class Developer {
 
   @Prop({ required: true })
   password: string;
-
-  @Prop()
-  userId: string;
 }
 
 export const DeveloperSchema = SchemaFactory.createForClass(Developer);

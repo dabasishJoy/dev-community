@@ -8,10 +8,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/decorators/get-user-decorator';
+import { IDeveloper } from 'src/developer/interfaces/developer.interface';
 import { CreateExperienceDto } from './dto/create-experience-dto';
 import { UpdateExperienceDto } from './dto/update-experience-dto';
 import { ExperienceService } from './experience.service';
-import { ExperienceParams } from './interfaces/experience-params.interface';
+import { IExperienceParams } from './interfaces/experience-params.interface';
+import { IUpdateExperienceParams } from './interfaces/update-experience-params.interface';
 
 @Controller('experience')
 export class ExperienceController {
@@ -20,26 +23,33 @@ export class ExperienceController {
   // create experiences
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  async createExperience(@Body() createExperienceDto: CreateExperienceDto) {
-    return await this.experienceService.createExperience(createExperienceDto);
+  async createExperience(
+    @GetUser() developer: IDeveloper,
+    @Body() createExperienceDto: CreateExperienceDto,
+  ) {
+    return await this.experienceService.createExperience(
+      createExperienceDto,
+      developer,
+    );
   }
 
   // update experiences
   @Put('/:experienceId')
   @UseGuards(AuthGuard('jwt'))
   async updateExperience(
-    @Param() experienceParams: ExperienceParams,
+    @Param() updateExperienceParams: IUpdateExperienceParams,
     @Body() updateExperienceDto: UpdateExperienceDto,
   ) {
     return await this.experienceService.updateExperience(
-      experienceParams,
+      updateExperienceParams,
       updateExperienceDto,
     );
   }
+
   // get experiences
-  @Get()
+  @Get('/:authorId')
   @UseGuards(AuthGuard('jwt'))
-  async getExperiences() {
-    return await this.experienceService.getExperiences();
+  async getExperiences(@Param() experienceParams: IExperienceParams) {
+    return await this.experienceService.getExperiences(experienceParams);
   }
 }

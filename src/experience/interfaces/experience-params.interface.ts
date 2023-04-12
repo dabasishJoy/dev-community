@@ -1,3 +1,3 @@
-export interface ExperienceParams {
-  experienceId: string;
+export interface IExperienceParams {
+  authorId: string;
 }

@@ -1,3 +1,3 @@
-export interface SkillsParams {
+export interface ISkillsParams {
   authorId: string;
 }

@@ -12,7 +12,7 @@ import { Developer, DeveloperSchema } from './schemas/developer.schema';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: 'kjhakdfoeial4asd5f465e4asd54fa3e4aw5e4f5dasf4aew354fafe',
-      signOptions: { expiresIn: 86400 },
+      signOptions: { expiresIn: '1d' },
     }),
     MongooseModule.forFeature([
       { name: Developer.name, schema: DeveloperSchema },

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class UpdateExperienceDto {
   @IsNotEmpty({ message: 'Description is empty' })
@@ -6,7 +6,7 @@ export class UpdateExperienceDto {
   readonly description: string;
 
   @IsNotEmpty({ message: 'Years is empty' })
-  @IsString()
+  @IsNumber()
   readonly years: number;
 
   @IsNotEmpty({ message: 'Author id is empty' })

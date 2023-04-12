@@ -1,5 +1,6 @@
-export interface JwtPayload {
-  userName: string;
+import { Types } from 'mongoose';
+
+export interface IJwtPayload {
   email: string;
-  userId: string;
+  userId: Types.ObjectId;
 }

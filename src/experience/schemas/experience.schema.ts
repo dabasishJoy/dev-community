@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
 import { Developer } from 'src/developer/schemas/developer.schema';
 
 export type ExperienceDocument = Experience & Document;
@@ -15,8 +14,8 @@ export class Experience {
   @Prop({ required: true })
   field: string;
 
-  @Prop({ required: true, type: Types.ObjectId, ref: Developer.name })
-  author: Types.ObjectId;
+  @Prop({ required: true, type: String, ref: Developer.name })
+  authorId: string;
 }
 
 export const ExperienceSchema = SchemaFactory.createForClass(Experience);
