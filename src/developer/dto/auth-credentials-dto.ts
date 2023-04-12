@@ -4,8 +4,6 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  MaxLength,
-  MinLength,
   ValidateIf,
 } from 'class-validator';
 
@@ -16,28 +14,22 @@ export enum GranType {
 export class AuthCredentialsDto {
   @IsNotEmpty({ message: 'Gran type name is empty' })
   @IsEnum(GranType, { message: 'Invalid grantype type' })
-  @IsString()
   readonly granType: GranType;
 
   @IsNotEmpty({ message: 'Email is empty' })
-  @IsString()
-  @IsEmail()
   @ValidateIf((obj) => obj.granType === GranType.email)
   @IsOptional()
+  @IsEmail()
   readonly email: string;
 
+  @IsNotEmpty({ message: 'Email is empty' })
   @ValidateIf((obj) => obj.granType === GranType.email)
   @IsString()
-  @MinLength(6, { message: 'Password is too short' })
-  @MaxLength(20, { message: 'Password is too long' })
-  // @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-  //   message: 'Password is too weak',
-  // })
   readonly password: string;
 
   @IsNotEmpty({ message: 'Refresh token is empty' })
-  @IsString()
   @ValidateIf((obj) => obj.granType === GranType.refresh)
   @IsOptional()
+  @IsString()
   readonly refreshToken: string;
 }
