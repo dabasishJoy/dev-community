@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Skills, SkillsSchema } from './schemas/skills.schema';
 import { SkillsController } from './skills.controller';
-import { Skills, SkillsSchema } from './skills.model';
 import { SkillsService } from './skills.service';
 
 @Module({

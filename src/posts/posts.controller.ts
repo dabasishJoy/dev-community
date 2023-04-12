@@ -12,13 +12,13 @@ export class PostsController {
   @Post('/post')
   @UseGuards(AuthGuard('jwt'))
   async createPost(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.createPost(createPostDto);
+    return await this.postsService.createPost(createPostDto);
   }
 
   //   get all posts
   @Get('/:authorId')
   @UseGuards(AuthGuard('jwt'))
   async getPosts(@Param() postParams: SkillsParams) {
-    return this.postsService.getPosts(postParams);
+    return await this.postsService.getPosts(postParams);
   }
 }

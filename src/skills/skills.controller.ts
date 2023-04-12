@@ -5,7 +5,6 @@ import {
   Param,
   Post,
   Put,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -21,28 +20,28 @@ export class SkillsController {
   // create skill
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  async createSkill(@Body() createSkillsDto: CreateSkillsDto, @Res() response) {
-    return this.skillsService.createSkills(createSkillsDto, response);
+  async createSkill(@Body() createSkillsDto: CreateSkillsDto) {
+    return await this.skillsService.createSkills(createSkillsDto);
   }
 
   // update skill
   @Put()
   @UseGuards(AuthGuard('jwt'))
-  async updateSkill(@Body() updateSkillsDto: UpdateSkillsDto, @Res() response) {
-    return this.skillsService.updateSkills(updateSkillsDto, response);
+  async updateSkill(@Body() updateSkillsDto: UpdateSkillsDto) {
+    return await this.skillsService.updateSkills(updateSkillsDto);
   }
 
   // get skills of an author
   @Get()
   @UseGuards(AuthGuard('jwt'))
   async getSkills() {
-    return this.skillsService.getSkills();
+    return await this.skillsService.getSkills();
   }
 
   // get skills of an author
   @Get('/:authorId')
   @UseGuards(AuthGuard('jwt'))
   async getSkillsOfIndividual(@Param() skillsParams: SkillsParams) {
-    return this.skillsService.getSkillsOfIndividual(skillsParams);
+    return await this.skillsService.getSkillsOfIndividual(skillsParams);
   }
 }

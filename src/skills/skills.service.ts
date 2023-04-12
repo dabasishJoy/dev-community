@@ -1,10 +1,10 @@
-import { HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateSkillsDto } from './dto/create-skills-dto';
 import { UpdateSkillsDto } from './dto/update-skills-dto';
 import { SkillsParams } from './interfaces/skills-params.interface';
-import { Skills, SkillsDocument } from './skills.model';
+import { Skills, SkillsDocument } from './schemas/skills.schema';
 
 @Injectable()
 export class SkillsService {
@@ -14,43 +14,39 @@ export class SkillsService {
     private readonly skillsModel: Model<SkillsDocument>,
   ) {}
 
-  async createSkills(createSkillsDto: CreateSkillsDto, response) {
+  // create skill
+  async createSkills(createSkillsDto: CreateSkillsDto): Promise<any> {
     // create a new model with dto
-    const comments = new this.skillsModel(createSkillsDto);
-
-    const res = await comments.save();
+    const res = await new this.skillsModel(createSkillsDto).save();
 
     // return response
-    response
-      .status(HttpStatus.CREATED)
-      .json({ message: 'Successfully Created Skill', post: res });
+    return res;
   }
 
-  async updateSkills(updateSkillDto: UpdateSkillsDto, response) {
+  // update skill
+  async updateSkills(updateSkillDto: UpdateSkillsDto): Promise<any> {
     const { skill: skillId } = updateSkillDto;
     this.logger.verbose(`skill id is: ${skillId}`);
-    const existingSkill = await this.skillsModel.findByIdAndUpdate(skillId, {
+    const res = await this.skillsModel.findByIdAndUpdate(skillId, {
       skillname: [...updateSkillDto.skillname],
     });
 
     // return response
-    response
-      .status(HttpStatus.CREATED)
-      .json({ message: 'Successfully Updated Skill', post: existingSkill });
+    return res;
   }
 
   // get all skills
   async getSkills() {
-    const skills = await this.skillsModel.find();
+    const res = await this.skillsModel.find();
 
-    return skills;
+    return res;
   }
 
   // get skills of an author
   async getSkillsOfIndividual(skillsParams: SkillsParams) {
     const { authorId } = skillsParams;
-    const skills = await this.skillsModel.find({ author: authorId });
+    const res = await this.skillsModel.find({ author: authorId });
 
-    return skills;
+    return res;
   }
 }

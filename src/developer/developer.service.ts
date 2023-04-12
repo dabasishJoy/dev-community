@@ -84,7 +84,7 @@ export class DeveloperService {
     };
 
     const refreshToken = await this.jwtService.sign(payload, {
-      expiresIn: '30d',
+      expiresIn: process.env.JWT_REFRESH_EXPIRATION,
     });
 
     return refreshToken;

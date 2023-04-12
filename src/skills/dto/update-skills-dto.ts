@@ -10,6 +10,6 @@ export class UpdateSkillsDto {
   author: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'Skill is empty' })
+  @IsNotEmpty({ message: 'Skill id is empty' })
   skill: string;
 }
