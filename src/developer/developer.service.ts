@@ -20,6 +20,20 @@ export class DeveloperService {
     private readonly jwtService: JwtService,
   ) {}
 
+  async getConstructDeveloper(
+    createDeveloperDto: CreateDeveloperDto,
+    hashedPassword: string,
+  ): Promise<any> {
+    const newDeveloperObj = {
+      fname: createDeveloperDto.fname ? createDeveloperDto.fname : '',
+      lname: createDeveloperDto.lname ? createDeveloperDto.lname : '',
+      email: createDeveloperDto.email ? createDeveloperDto.email : '',
+      phone: createDeveloperDto.phone ? createDeveloperDto.phone : '',
+      password: hashedPassword,
+    };
+
+    return newDeveloperObj;
+  }
   // create user
   async createDeveloper(createDeveloperDto: CreateDeveloperDto): Promise<any> {
     const { password } = createDeveloperDto;
@@ -29,15 +43,14 @@ export class DeveloperService {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // inject that hashed password to user data
-    const updatedUserData: Developer = {
-      ...createDeveloperDto,
-      password: hashedPassword,
-    };
+
+    const newUser = await this.getConstructDeveloper(
+      createDeveloperDto,
+      hashedPassword,
+    );
 
     // save in db
-    const res = await this.developerModel.create(updatedUserData);
-
-    return res;
+    return await this.developerModel.create(newUser);
   }
 
   // check signin or refresh refreshToken
@@ -95,10 +108,10 @@ export class DeveloperService {
       userId: user._id,
     };
 
-    // const accesstoken = await this.jwtService.sign(payload, {
-    //   expiresIn: process.env.JWT_ACCESS_EXPIRATION,
-    // });
-    const accesstoken = await this.jwtService.sign(payload);
+    const accesstoken = await this.jwtService.sign(payload, {
+      expiresIn: process.env.JWT_ACCESS_EXPIRATION,
+    });
+    // const accesstoken = await this.jwtService.sign(payload);
 
     return accesstoken;
   }
