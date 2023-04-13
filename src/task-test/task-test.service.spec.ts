@@ -13,11 +13,11 @@ describe('TaskTestService', () => {
     service = module.get<TaskTestService>(TaskTestService);
   });
 
-  describe('fibonacci series', () => {
-    it('should be defined', () => {
-      expect(service).toBeDefined();
-    });
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
 
+  describe('fibonacci series', () => {
     it('should return a fibonacci number of a given number', async () => {
       // arrange
       const number = 5;
@@ -46,7 +46,7 @@ describe('TaskTestService', () => {
       // arrage
       const number = -5;
 
-      // actw
+      // act
       const res = () => {
         return service.calculateFibonacci(number);
       };
@@ -145,6 +145,12 @@ describe('TaskTestService', () => {
       expect(() => service.rectangleArea(5, -3)).toThrow(
         'Width and height must be non-negative.',
       );
+    });
+  });
+
+  describe('binary search', () => {
+    it('should return the position of a given target', () => {
+      expect(service.binarySearch([45, 3, 4, 5], 4)).toEqual(2);
     });
   });
 });
