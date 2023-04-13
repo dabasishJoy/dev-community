@@ -9,6 +9,7 @@ import { DeveloperModule } from './developer/developer.module';
 import { ExperienceModule } from './experience/experience.module';
 import { PostsModule } from './posts/posts.module';
 import { SkillsModule } from './skills/skills.module';
+import { TaskTestModule } from './task-test/task-test.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { SkillsModule } from './skills/skills.module';
     CommentsModule,
     SkillsModule,
     ExperienceModule,
+    TaskTestModule,
   ],
   controllers: [AppController],
   providers: [AppService],

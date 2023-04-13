@@ -7,6 +7,7 @@ import { AuthCredentialsDto, GranType } from './dto/auth-credentials-dto';
 import { CreateDeveloperDto } from './dto/create-developer-dto';
 import { IDeveloper } from './interfaces/developer.interface';
 import { IJwtPayload } from './interfaces/jwt-payload.interface';
+import { ISignedInuser } from './interfaces/signedin-user.interface';
 import { Developer, DeveloperDocument } from './schemas/developer.schema';
 
 @Injectable()
@@ -65,7 +66,7 @@ export class DeveloperService {
   }
 
   // just signin
-  async signIn(authCredentialsDto: AuthCredentialsDto): Promise<any> {
+  async signIn(authCredentialsDto: AuthCredentialsDto): Promise<ISignedInuser> {
     // grab email and password
     const { email, password } = authCredentialsDto;
     // find the user in db
