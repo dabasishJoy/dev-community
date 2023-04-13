@@ -35,7 +35,9 @@ export class DeveloperService {
     return newDeveloperObj;
   }
   // create user
-  async createDeveloper(createDeveloperDto: CreateDeveloperDto): Promise<any> {
+  async createDeveloper(
+    createDeveloperDto: CreateDeveloperDto,
+  ): Promise<IDeveloper> {
     const { password } = createDeveloperDto;
 
     // hash the password
@@ -86,7 +88,7 @@ export class DeveloperService {
   }
 
   // get refresh token
-  async getRefreshToken(user: IDeveloper): Promise<any> {
+  async getRefreshToken(user: IDeveloper): Promise<string> {
     // create payload
     const payload: IJwtPayload = {
       email: user.email,
@@ -101,7 +103,7 @@ export class DeveloperService {
   }
 
   // get access token
-  async getAccessToken(user: IDeveloper): Promise<any> {
+  async getAccessToken(user: IDeveloper): Promise<string> {
     // create payload
     const payload: IJwtPayload = {
       email: user.email,
